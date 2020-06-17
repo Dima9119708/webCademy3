@@ -13,6 +13,7 @@ export class DomEventListener {
   }
 
   initListener() {
+
     this.listener.forEach(listener => {
       const metod = prefix(listener)
 

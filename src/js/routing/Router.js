@@ -17,8 +17,16 @@ export class Router {
 
   async changePageHandler() {
 
-    const Page = this.pages.main
-    const page = new Page()
+    let Page
+
+    if (ActiveRouter.hash === '') {
+      Page = this.pages.main
+    }
+    else if (ActiveRouter.hash.startsWith('items/')) {
+      Page = this.pages.card
+    }
+
+    const page = new Page(ActiveRouter.params)
 
     this.$root.clear().append(this.preloader())
 

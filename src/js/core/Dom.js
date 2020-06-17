@@ -35,8 +35,20 @@ class Dom {
     return this
   }
 
+  parent(node) {
+    return this.$el.closest(node)
+  }
+
   querySelector(selector) {
     return $(this.$el.querySelector(selector))
+  }
+
+  attr(name, value) {
+    if (value) {
+      this.$el.setAttribute(name, value);
+    }
+
+    return this.$el.dataset[name]
   }
 }
 
