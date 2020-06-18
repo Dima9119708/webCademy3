@@ -23,6 +23,8 @@ export class Router {
     }
     else if (ActiveRouter.hash.startsWith('favourites/')) {
       Page = this.pages.favourites
+    } else {
+      Page = this.pages.main
     }
 
     this.changePageHandler(Page)

@@ -1,4 +1,5 @@
 import { MainComponent } from '../core/MainComponent'
+import { FilterFavourites } from './filterFavourites.fn'
 
 export class Filter_Favourites extends MainComponent {
 
@@ -11,8 +12,6 @@ export class Filter_Favourites extends MainComponent {
       listener : ['change'],
       ...options
     })
-
-    this.storage = options.storage
   }
 
   toHTML() {
@@ -44,41 +43,8 @@ export class Filter_Favourites extends MainComponent {
 
   onChange(event) {
 
-    let filterArr
     const { value } = event.target
-
-    switch (value) {
-      case 'все':
-
-        filterArr = this.storage.sort()
-        break
-      case 'цена по возрастанию' :
-
-        filterArr = this.storage.sort((a, b) => {
-          return +a.price_total - +b.price_total
-        })
-        break
-
-      case 'цена по убыванию':
-
-        filterArr = this.storage.sort((a, b) => {
-          return +b.price_total - +a.price_total
-        })
-        break
-      case 'площадь по возрастанию':
-
-        filterArr = this.storage.sort((a, b) => {
-          return +a.square - +b.square
-        })
-        break
-      case 'площадь по убыванию':
-
-        filterArr = this.storage.sort((a, b) => {
-          return +b.square - +a.square
-        })
-        break
-    }
-
+    const filterArr = FilterFavourites(value, this.store.getState())
     this.$emit('SORT_FILTER', filterArr)
   }
 }

@@ -11,6 +11,7 @@ export class Main {
     this.DATA = DATA
     this.emmiter = new Emitter()
     this.store = new Store(reducer, storage('DATA') || {})
+    this.data = DATA
   }
 
   getRoot() {
@@ -20,7 +21,8 @@ export class Main {
     const options = {
       DATA: this.DATA,
       emmiter: this.emmiter,
-      store: this.store
+      store: this.store,
+      card: this.data
     }
 
     this.components = this.components.map(Component => {
@@ -34,8 +36,7 @@ export class Main {
     })
 
     this.store.subscribeStore(data => {
-
-      storage('DATA', JSON.stringify(data.data))
+      storage('DATA', data.data)
     })
 
     return main

@@ -1,4 +1,5 @@
 import { reducer } from "./reducer"
+import { storage } from "../storage/localStorage"
 
 export class Store {
 
@@ -18,6 +19,6 @@ export class Store {
   }
 
   getState() {
-    return this.store
+    return storage('DATA')
   }
 }

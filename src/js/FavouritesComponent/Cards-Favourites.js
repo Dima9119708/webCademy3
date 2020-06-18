@@ -1,5 +1,7 @@
 import { MainComponent } from '../core/MainComponent'
 import { $ } from '../core/Dom'
+import { ActiveRouter } from '../routing/ActiveRouter'
+import { favoritesARR } from '../core/redux/actions'
 
 export class Cards_Favourites extends MainComponent {
 
@@ -12,8 +14,8 @@ export class Cards_Favourites extends MainComponent {
       listener : ['click'],
       ...options
     })
+    
     this.$root = $root
-    this.storage = options.storage || []
   }
 
   init() {
@@ -40,10 +42,9 @@ export class Cards_Favourites extends MainComponent {
 
   DATAHTML(value) {
 
-    let cards
+    const data = value ? value : this.store.getState()
 
-    if (value) {
-      cards = value.map(obj => {
+    const cards = data.map(obj => {
 
         return `
             <article class="col-md-4" data-id="${obj.id}">
@@ -53,7 +54,7 @@ export class Cards_Favourites extends MainComponent {
                     <div class="card__title">
                         ${obj.complex_name}
                     </div>
-                    <div class="card__like" style="color: red">
+                    <div class="card__like" data-like style="color: red">
                         <i class="fas fa-heart"></i>
                     </div>
                 </div>
@@ -95,71 +96,39 @@ export class Cards_Favourites extends MainComponent {
 
         </article>
     `
-      })
-    }
-    else {
-      cards = this.storage.map(obj => {
-
-        return `
-            <article class="col-md-4" data-id="${obj.id}">
-
-            <div data-href="#items/${obj.id}" class="card">
-                <div class="card__header">
-                    <div class="card__title">
-                        ${obj.complex_name}
-                    </div>
-                    <div class="card__like" style="color: red">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                </div>
-                <div class="card__img">
-                    <img src="${obj.image}" alt="План квартиры" />
-                </div>
-                <div class="card__desc">
-                    <div class="card__price">
-                        <div class="card__price-total">
-                            ${obj.price_total} ₽
-                        </div>
-                        <div class="card__price-per-meter">
-                                ${obj.price_sq_m} ₽/м2
-                        </div>
-                    </div>
-
-
-                    <div class="card__params params">
-                        <div class="params__item">
-                            <div class="params__definition">
-                                Комнат
-                            </div>
-                            <div class="params__value">${obj.rooms}</div>
-                        </div>
-                        <div class="params__item">
-                            <div class="params__definition">
-                                Площадь
-                            </div>
-                            <div class="params__value">${obj.square}</div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="card__footer">
-                    <div class="card__art">${obj.scu}</div>
-                    <div class="card__floor">Этаж 4 из 12</div>
-                </div>
-            </div>
-
-        </article>
-    `
-      })
-    }
+    })
 
     $(this.$root)
         .querySelector('[data-append]')
         .clear()
-        .insertHTML('beforeend', cards.join(''))
-  }
+        .insertHTML('beforeend', cards.join('') || 'В избранном ничего нет')
+    }
 
   onClick() {
 
+    const card = $(event.target).parent('[data-id]')
+    const like = $(event.target).parent('[data-like]')
+
+    if (like) {
+
+        const id = $(card).attr('id')
+
+        const storage = this.store.getState()
+
+        storage.forEach( (elem, index) => {
+            if (elem.id === id) {
+                storage.splice(index, 1)
+            }
+        });
+
+        this.$dispatch(favoritesARR(storage))
+        ActiveRouter.reload
+
+    } else if (card) {
+        event.preventDefault()
+        const { dataset } = card.querySelector('[data-href]')
+        ActiveRouter.setHash = dataset.href
+        ActiveRouter.reload
+    }
   }
 }

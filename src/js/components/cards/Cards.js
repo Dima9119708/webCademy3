@@ -44,7 +44,7 @@ export class Cards extends MainComponent {
   DATAHTML(data) {
     const cards = data.map(obj => {
 
-        const DATAStorage = storage('DATA') || []
+        const DATAStorage = this.store.getState() || []
         let boolean
 
         DATAStorage.forEach(elem => {
@@ -127,9 +127,11 @@ export class Cards extends MainComponent {
                      ? true
                      : false
 
-        if (storage('DATA') && storage('DATA').length > 0) {
+        const storage = this.store.getState()
 
-            storage('DATA').forEach(obj => {
+        if (storage && storage.length > 0) {
+
+            storage.forEach(obj => {
 
                 this.DATA.forEach((elem, index) => {
                     if (obj.id === elem.id) {
