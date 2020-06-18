@@ -1,16 +1,12 @@
-import { $ } from "../../core/Dom"
-import { Emitter } from "../../core/Emmiter"
-import { reducer } from "../../core/redux/reducer"
-import { Store } from '../../core/redux/Store'
-import { storage } from "../../core/storage/localStorage"
+import { $ } from "../core/Dom"
+import { storage } from "../core/storage/localStorage"
+import { Emitter } from "../core/Emmiter"
 
-export class Main {
+export class MainFavourites {
 
-  constructor(components = [], DATA) {
+  constructor(components = []) {
     this.components = components
-    this.DATA = DATA
     this.emmiter = new Emitter()
-    this.store = new Store(reducer, storage('DATA') || {})
   }
 
   getRoot() {
@@ -18,9 +14,8 @@ export class Main {
     const main = $.create('div', 'main')
 
     const options = {
-      DATA: this.DATA,
-      emmiter: this.emmiter,
-      store: this.store
+      storage : storage('DATA'),
+      emmiter : this.emmiter
     }
 
     this.components = this.components.map(Component => {
@@ -31,11 +26,6 @@ export class Main {
       main.append(componentParent)
 
       return component
-    })
-
-    this.store.subscribeStore(data => {
-
-      storage('DATA', JSON.stringify(data.data))
     })
 
     return main

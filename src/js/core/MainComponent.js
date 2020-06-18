@@ -6,6 +6,7 @@ export class MainComponent extends DomEventListener {
     super($root, options)
 
     this.emmiter = options.emmiter
+    this.store = options.store
   }
 
   toHTML() {
@@ -18,6 +19,10 @@ export class MainComponent extends DomEventListener {
 
   $subscribe(name, fn) {
     this.emmiter.subscribe(name, fn)
+  }
+
+  $dispatch(action) {
+    this.store.dispatch(action)
   }
 
   init() {

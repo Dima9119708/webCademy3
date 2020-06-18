@@ -27,11 +27,8 @@ module.exports = {
     new CleanWebpackPlugin(),
 
     HtmlWebpackPlugins('index.html', './src/index.html'),
-    HtmlWebpackPlugins('favourites.html', './src/favourites.html'),
     HtmlWebpackPlugins('main.html', './src/main.html'),
-    HtmlWebpackPlugins('object.html', './src/object.html'),
     HtmlWebpackPlugins('object-modal.html', './src/object-modal.html'),
-    HtmlWebpackPlugins('preloader.html', './src/preloader.html'),
     HtmlWebpackPlugins('bids.html', './src/bids.html'),
 
     new CopyPlugin([
