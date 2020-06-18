@@ -16,7 +16,7 @@ export class Card extends MainComponent {
 
   toHTML() {
     return `
-             <div class="heading-1">
+             <div class="heading-1" data-id="${this.card.id}">
                   Студия, ${this.card.square} м2 за ${this.card.price_total} ₽
               </div>
 

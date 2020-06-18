@@ -1,60 +1,50 @@
-import { MainComponent } from "../../core/MainComponent";
-import { $ } from "../../core/Dom";
-import { ActiveRouter } from "../../routing/ActiveRouter";
-import { favoritesARR } from "../../core/redux/actions";
-import { storage } from "../../core/storage/localStorage";
+import { MainComponent } from '../core/MainComponent'
+import { $ } from '../core/Dom'
+import { ActiveRouter } from '../routing/ActiveRouter'
+import { favoritesARR } from '../core/redux/actions'
 
-export class Cards extends MainComponent {
+export class Cards_Favourites extends MainComponent {
 
   static className = 'cards-wrapper'
   static tagName = 'div'
 
   constructor($root, options) {
     super($root, {
-    listener : ['click'],
-    ...options
+      name: 'Cards_Favourites',
+      listener : ['click'],
+      ...options
     })
-
+    
     this.$root = $root
-    this.DATA = []
   }
-
 
   init() {
     super.init()
 
-    this.$subscribe('DATA', data => {
-        this.DATA = data
-        this.DATAHTML(data)
+    this.DATAHTML()
+
+    this.$subscribe('SORT_FILTER', data => {
+      this.DATAHTML(data)
     })
   }
 
   toHTML() {
-    return `
-    <div class="container p-0 pt-5">
+    return  `
+      <div class="container p-0 pt-5">
 
         <!-- row -->
         <div class="row" data-append></div>
         <!-- // row -->
 
-    </div>
+      </div>
     `
   }
 
-  DATAHTML(data) {
+  DATAHTML(value) {
+
+    const data = value ? value : this.store.getState()
+
     const cards = data.map(obj => {
-
-        const DATAStorage = this.store.getState() || []
-        let boolean
-
-        DATAStorage.forEach(elem => {
-            if (elem.id === obj.id) {
-                boolean = elem.favorites
-            }
-        })
-
-        const booleanIF = boolean ? boolean : false
-        const color = boolean ? 'red' : '#ececec'
 
         return `
             <article class="col-md-4" data-id="${obj.id}">
@@ -64,7 +54,7 @@ export class Cards extends MainComponent {
                     <div class="card__title">
                         ${obj.complex_name}
                     </div>
-                    <div class="card__like" data-like="${booleanIF}" style="color:${color}">
+                    <div class="card__like" data-like style="color: red">
                         <i class="fas fa-heart"></i>
                     </div>
                 </div>
@@ -111,63 +101,28 @@ export class Cards extends MainComponent {
     $(this.$root)
         .querySelector('[data-append]')
         .clear()
-        .insertHTML('beforeend', cards.join(''))
-  }
+        .insertHTML('beforeend', cards.join('') || 'В избранном ничего нет')
+    }
 
-  onClick(event) {
+  onClick() {
 
     const card = $(event.target).parent('[data-id]')
     const like = $(event.target).parent('[data-like]')
-    const favorites = []
 
     if (like) {
-        const id = $(card).attr('id')
 
-        const flag = JSON.parse($(like).attr('like')) === false
-                     ? true
-                     : false
+        const id = $(card).attr('id')
 
         const storage = this.store.getState()
 
-        if (storage && storage.length > 0) {
-
-            storage.forEach(obj => {
-
-                this.DATA.forEach((elem, index) => {
-                    if (obj.id === elem.id) {
-                        this.DATA.splice(index, 1, obj)
-                    }
-                })
-            })
-        }
-
-        this.DATA = this.DATA.map(elem => {
+        storage.forEach( (elem, index) => {
             if (elem.id === id) {
-                return { ...elem, favorites: flag}
-            } else {
-                return elem
+                storage.splice(index, 1)
             }
-        })
+        });
 
-        this.DATA.forEach(elem => {
-            if (elem.favorites) {
-                favorites.push(elem)
-            }
-        })
-
-        this.$dispatch(favoritesARR(favorites))
-
-        if (flag) {
-            $(like).css({
-                color: 'red'
-            })
-        } else {
-            $(like).css({
-                color: '#ececec'
-            })
-        }
-
-        $(like).attr('data-like', `${flag}`)
+        this.$dispatch(favoritesARR(storage))
+        ActiveRouter.reload
 
     } else if (card) {
         event.preventDefault()

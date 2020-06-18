@@ -1,5 +1,8 @@
 import { $ } from "../../core/Dom"
 import { Emitter } from "../../core/Emmiter"
+import { reducer } from "../../core/redux/reducer"
+import { Store } from '../../core/redux/Store'
+import { storage } from "../../core/storage/localStorage"
 
 export class Main {
 
@@ -7,6 +10,8 @@ export class Main {
     this.components = components
     this.DATA = DATA
     this.emmiter = new Emitter()
+    this.store = new Store(reducer, storage('DATA') || {})
+    this.data = DATA
   }
 
   getRoot() {
@@ -15,7 +20,9 @@ export class Main {
 
     const options = {
       DATA: this.DATA,
-      emmiter: this.emmiter
+      emmiter: this.emmiter,
+      store: this.store,
+      card: this.data
     }
 
     this.components = this.components.map(Component => {
@@ -26,6 +33,10 @@ export class Main {
       main.append(componentParent)
 
       return component
+    })
+
+    this.store.subscribeStore(data => {
+      storage('DATA', data.data)
     })
 
     return main

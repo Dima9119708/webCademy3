@@ -12,10 +12,6 @@ export class Router {
   }
 
   init() {
-    this.changePageHandler()
-  }
-
-  async changePageHandler() {
 
     let Page
 
@@ -25,6 +21,16 @@ export class Router {
     else if (ActiveRouter.hash.startsWith('items/')) {
       Page = this.pages.card
     }
+    else if (ActiveRouter.hash.startsWith('favourites/')) {
+      Page = this.pages.favourites
+    } else {
+      Page = this.pages.main
+    }
+
+    this.changePageHandler(Page)
+  }
+
+  async changePageHandler(Page) {
 
     const page = new Page(ActiveRouter.params)
 

@@ -1,11 +1,11 @@
 import { PagesIntarface } from "./PagesInterface";
 import { fetchDATA } from "../Fetch/fetchData";
-import { MainObject } from "../objectComponent/main/MainObject";
 import { Header } from "../components/header/header";
 import { Logo } from "../components/logo/Logo";
 import { Card } from "../objectComponent/card/Card";
 import { Footer } from "../components/footer/Footer";
 import { ActiveRouter } from '../routing/ActiveRouter'
+import { Main } from "../components/main/main";
 
 export class CardPage extends PagesIntarface {
 
@@ -25,7 +25,7 @@ export class CardPage extends PagesIntarface {
       ActiveRouter.reload
     }
 
-    this.object = new MainObject(
+    this.object = new Main(
       [Header, Logo, Card, Footer],
       getDATA
     )
@@ -40,5 +40,4 @@ export class CardPage extends PagesIntarface {
   destroyDelete() {
     this.object.destroy()
   }
-
 }

@@ -1,4 +1,5 @@
 import { $ } from "../core/Dom"
+import { fetchDATA } from "../Fetch/fetchData"
 
 export function preloader() {
 
@@ -57,4 +58,18 @@ export function preloader() {
         </div>`
 
   return preloader
+}
+
+export function preloaderMINI() {
+    const preloader = $.create('div', 'preloader-holder')
+    preloader.innerHTML = `
+        <div class="sk-folding-cube">
+                        <div class="sk-cube sk-cube-1"></div>
+                        <div class="sk-cube sk-cube-2"></div>
+                        <div class="sk-cube sk-cube-4"></div>
+                        <div class="sk-cube sk-cube-3"></div>
+        </div>
+    `
+
+    return preloader
 }

@@ -35,6 +35,12 @@ class Dom {
     return this
   }
 
+  css(styles = {}) {
+    Object.keys(styles).forEach(key => {
+      this.$el.style[key] = styles[key]
+    })
+  }
+
   parent(node) {
     return this.$el.closest(node)
   }
