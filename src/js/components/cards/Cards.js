@@ -173,6 +173,7 @@ export class Cards extends MainComponent {
         event.preventDefault()
         const { dataset } = card.querySelector('[data-href]')
         ActiveRouter.setHash = dataset.href
+        this.destroyEventListener()
         ActiveRouter.reload
     }
   }

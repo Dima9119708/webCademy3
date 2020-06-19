@@ -14,7 +14,7 @@ export class Cards_Favourites extends MainComponent {
       listener : ['click'],
       ...options
     })
-    
+
     this.$root = $root
   }
 
@@ -128,6 +128,7 @@ export class Cards_Favourites extends MainComponent {
         event.preventDefault()
         const { dataset } = card.querySelector('[data-href]')
         ActiveRouter.setHash = dataset.href
+        this.destroyEventListener()
         ActiveRouter.reload
     }
   }

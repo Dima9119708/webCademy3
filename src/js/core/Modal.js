@@ -8,6 +8,8 @@ import {
   modalFormPhone
 } from "./modal.fn";
 
+import { ActiveRouter } from '../routing/ActiveRouter'
+
 export class Modal {
 
   open(card) {
@@ -108,7 +110,6 @@ export class Modal {
     }
 
     this.modal.oninput = e => {
-
       let { id, value } = e.target
 
       if (id === 'form-name') {

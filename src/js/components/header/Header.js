@@ -47,10 +47,12 @@ export class Header extends MainComponent{
 
     if (favourites) {
       ActiveRouter.setHash = 'favourites/'
+      this.destroyEventListener()
       ActiveRouter.reload
     }
     else if (bids) {
       ActiveRouter.setHash = 'bids/'
+      this.destroyEventListener()
       ActiveRouter.reload
     }
   }

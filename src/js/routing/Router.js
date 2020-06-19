@@ -9,31 +9,37 @@ export class Router {
     this.preloader = preloader
 
     this.init()
+
+    this.Page = null
   }
 
   init() {
 
-    let Page
 
     if (ActiveRouter.hash === '') {
-      Page = this.pages.main
+      this.Page = this.pages.main
     }
     else if (ActiveRouter.hash.startsWith('items/')) {
-      Page = this.pages.card
+      this.Page = this.pages.card
     }
     else if (ActiveRouter.hash.startsWith('favourites/')) {
-      Page = this.pages.favourites
+      
+      this.Page = this.pages.favourites
+
     } else if (ActiveRouter.hash.startsWith('bids/')) {
-      Page = this.pages.bids
+
+      this.Page = this.pages.bids
     }
      else {
-      Page = this.pages.main
+      this.Page = this.pages.main
     }
 
-    this.changePageHandler(Page)
+    this.changePageHandler()
   }
 
-  async changePageHandler(Page) {
+  async changePageHandler() {
+
+    const Page = this.Page
 
     const page = new Page(ActiveRouter.params)
 

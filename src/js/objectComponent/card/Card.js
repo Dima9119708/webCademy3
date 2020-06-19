@@ -180,11 +180,11 @@ export class Card extends MainComponent {
            })
 
            this.$dispatch(favoritesARR(this.storage))
+
        } else if (order) {
 
             $(this.$root).append(this.modal.open(this.card))
-            this.modal.init(this.$root)
-
+            this.modal.init()
        }
 
    }

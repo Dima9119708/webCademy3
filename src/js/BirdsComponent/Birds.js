@@ -1,6 +1,4 @@
 import { MainComponent } from "../core/MainComponent";
-import { $ } from "../core/Dom";
-import { storage } from "../core/storage/localStorage";
 
 export class Birds extends MainComponent {
 
