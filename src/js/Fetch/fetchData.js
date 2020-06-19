@@ -1,3 +1,7 @@
+import { preloaderMINI } from "../preloader/preloader"
+import { $ } from "../core/Dom"
+import { storage } from "../core/storage/localStorage"
+
 export async function fetchDATA(url, fileName) {
 
   try {
@@ -12,4 +16,49 @@ export async function fetchDATA(url, fileName) {
       Оправка была с файла ${fileName}`)
   }
 
+}
+
+export async function fetchPOST(url, fileName, destroy, modal, send) {
+  $(modal).append(preloaderMINI())
+
+  try {
+
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(send)
+    });
+
+    const DATA = await response.json();
+
+    const preloader = $(modal).querySelector('[data-preloaderMINI]')
+    preloader.removeElem()
+
+    if (DATA.message === "Bid Created") {
+      alert('Ваша заявка успешно отправлена')
+      destroy()
+    }
+    else {
+      alert(`Ваша заявка не была отравлена,
+       либо некорректные данные,
+       либо проблемы на сервере,
+       попробуйте позже`
+      )
+
+      destroy()
+    }
+
+  } catch {
+    alert('Проблемы с сервером')
+    throw new Error(`
+      Не получили данные по адресу ${url},
+      Оправка была с файла ${fileName}`)
+  }
 }

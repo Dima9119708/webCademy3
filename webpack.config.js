@@ -27,9 +27,6 @@ module.exports = {
     new CleanWebpackPlugin(),
 
     HtmlWebpackPlugins('index.html', './src/index.html'),
-    HtmlWebpackPlugins('main.html', './src/main.html'),
-    HtmlWebpackPlugins('object-modal.html', './src/object-modal.html'),
-    HtmlWebpackPlugins('bids.html', './src/bids.html'),
 
     new CopyPlugin([
       {from: './src/favicon.ico', to: ''},

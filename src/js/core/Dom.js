@@ -16,6 +16,12 @@ class Dom {
 
   append(node) {
     this.$el.append(node)
+    return this
+  }
+
+  removeElem() {
+    this.$el.remove()
+    return this
   }
 
   insertHTML(position, text) {
@@ -28,6 +34,16 @@ class Dom {
 
   off(event, fn) {
     this.$el.removeEventListener(event, fn)
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className)
+    return this
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className)
+    return this
   }
 
   clear() {
