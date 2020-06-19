@@ -4,8 +4,17 @@
     left: 0;
     right: 0;
     bottom: 0;
+    opacity: 0;
     background-color: rgba(70, 131, 180, 0.5);
+    transition: .2s opacity linear;
+
+    &.open-modal {
+        opacity : 1;
+        transition: .2s opacity linear;
+    }
 }
+
+
 
 .modal {
     position: absolute;

@@ -1,4 +1,7 @@
 import { MainComponent } from "../../core/MainComponent";
+import { $ } from "../../core/Dom";
+import { favoritesARR } from "../../core/redux/actions";
+import { Modal } from "../../core/Modal";
 
 export class Card extends MainComponent {
 
@@ -8,14 +11,40 @@ export class Card extends MainComponent {
   constructor($root, options) {
     super($root, {
       name: 'Card',
-      listener : ['click']
+      listener : ['click'],
+      ...options
     })
 
-    this.card = options.card
+    this.$root = $root
+    this.card = options.card,
+    this.storage = this.store.getState()
+    this.modal = new Modal()
   }
 
-  toHTML() {
-    return `
+   toHTML() {
+    return this.cardHTML()
+   }
+
+   cardHTML() {
+        let inFavorites = ''
+        let notFavorites = ''
+
+       if (!this.storage.length) {
+           notFavorites = 'button-favourite--active'
+       }
+
+       const storage = this.storage
+                            .filter(elem => elem.id === this.card.id)
+                            .filter(elem => elem !== undefined)
+
+       if (storage.length > 0) {
+            inFavorites = 'button-favourite--active'
+        }
+        else {
+            notFavorites = 'button-favourite--active'
+        }
+
+        return `
              <div class="heading-1" data-id="${this.card.id}">
                   Студия, ${this.card.square} м2 за ${this.card.price_total} ₽
               </div>
@@ -43,12 +72,12 @@ export class Card extends MainComponent {
                             <div class="object__desc-art">${this.card.scu}</div>
 
                             <!-- Добавить в избранное -->
-                            <button class="button-favourite">
-                                <i class="fas fa-heart"></i> <span>В избранное</span>
+                            <button class="button-favourite ${notFavorites}" data-notFavorites="notFavorites">
+                                <i class="fas fa-heart"></i> <span>Не в избранном</span>
                             </button>
 
                             <!-- В Избранном -->
-                            <button class="button-favourite button-favourite--active">
+                            <button class="button-favourite ${inFavorites}" data-inFavorites="inFavorites">
                                 <i class="fas fa-heart"></i> <span>В избранном</span>
                             </button>
 
@@ -96,7 +125,7 @@ export class Card extends MainComponent {
                             </div>
                         </div>
 
-                        <button class="button-order">Забронировать</button>
+                        <button class="button-order" data-order>Забронировать</button>
                         <!-- <button class="button-preview">Записаться на просмотр</button> -->
                     </div>
                     <!-- // object__desc -->
@@ -111,9 +140,52 @@ export class Card extends MainComponent {
             </div>
         <!-- // content-wrapper -->
     `
-  }
+   }
 
-  onClick() {
+   onClick(event) {
 
-  }
+       const notFavorites = $(event.target).parent('[data-notFavorites]')
+       const inFavorites = $(event.target).parent('[data-inFavorites]')
+       const order = $(event.target).parent('[data-order]')
+
+       if (notFavorites) {
+
+           $(notFavorites).addClass('button-favourite--active')
+           const inFavorites = $(this.$root).querySelector('[data-inFavorites]')
+           inFavorites.removeClass('button-favourite--active')
+
+           this.storage.forEach( (elem, index) => {
+
+               if (elem.id === this.card.id) {
+                   this.storage.splice(index, 1)
+               }
+           })
+
+           this.$dispatch(favoritesARR(this.storage))
+
+       } else if (inFavorites) {
+
+           $(inFavorites).addClass('button-favourite--active')
+           const notFavorites = $(this.$root).querySelector('[data-notFavorites]')
+           notFavorites.removeClass('button-favourite--active')
+
+           if (this.storage.length < 1) {
+               this.storage.push(this.card)
+           }
+
+           this.storage.forEach(elem => {
+               if (JSON.stringify(elem) !== JSON.stringify(this.card)) {
+                   this.storage.push(this.card)
+               }
+           })
+
+           this.$dispatch(favoritesARR(this.storage))
+       } else if (order) {
+
+            $(this.$root).append(this.modal.open(this.card))
+            this.modal.init(this.$root)
+
+       }
+
+   }
 }

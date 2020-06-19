@@ -49,7 +49,7 @@ export class Cards extends MainComponent {
 
         DATAStorage.forEach(elem => {
             if (elem.id === obj.id) {
-                boolean = elem.favorites
+                boolean = true
             }
         })
 

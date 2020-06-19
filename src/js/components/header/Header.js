@@ -25,6 +25,12 @@ export class Header extends MainComponent{
                   </div>
                   <!-- <div class="top-panel__phone"><a href="tel:+8800557755">8 (800) 55-77-55</a></div> -->
 
+                  <div class="top-panel__favourites" data-app="app">
+                      <button class="btn-show-favourites" data-app="app">
+                          Заявки
+                      </button>
+                  </div>
+
                   <div class="top-panel__favourites" data-favourites="favourites">
                       <button class="btn-show-favourites" data-favourites="favourites">
                           <i class="fas fa-heart" data-favourites="favourites"></i> Избранное
@@ -37,9 +43,14 @@ export class Header extends MainComponent{
   onClick(event) {
 
     const favourites = $(event.target).attr('favourites')
+    const bids = $(event.target).attr('app')
 
     if (favourites) {
       ActiveRouter.setHash = 'favourites/'
+      ActiveRouter.reload
+    }
+    else if (bids) {
+      ActiveRouter.setHash = 'bids/'
       ActiveRouter.reload
     }
   }

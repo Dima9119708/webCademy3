@@ -23,7 +23,10 @@ export class Router {
     }
     else if (ActiveRouter.hash.startsWith('favourites/')) {
       Page = this.pages.favourites
-    } else {
+    } else if (ActiveRouter.hash.startsWith('bids/')) {
+      Page = this.pages.bids
+    }
+     else {
       Page = this.pages.main
     }
 

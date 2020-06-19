@@ -5,7 +5,7 @@ export function preloader() {
 
   const preloader = $.create('div', 'preloader')
   preloader.innerHTML = `
-   <div class="content-wrapper">
+   <div class="content-wrapper" >
             <!-- top-panel -->
             <div class="top-panel">
                 <div class="top-panel__container">
@@ -63,7 +63,7 @@ export function preloader() {
 export function preloaderMINI() {
     const preloader = $.create('div', 'preloader-holder')
     preloader.innerHTML = `
-        <div class="sk-folding-cube">
+        <div class="sk-folding-cube" data-preloaderMINI>
                         <div class="sk-cube sk-cube-1"></div>
                         <div class="sk-cube sk-cube-2"></div>
                         <div class="sk-cube sk-cube-4"></div>
