@@ -1,11 +1,13 @@
 import { preloaderMINI } from "../preloader/preloader"
 import { $ } from "../core/Dom"
-import { storage } from "../core/storage/localStorage"
 
 export async function fetchDATA(url, fileName) {
 
   try {
-    const getDATA = await fetch(url)
+    const getDATA = await fetch(url, {
+      method : 'GET',
+      mode: 'cors',
+    })
     const DATA_JSON = await getDATA.json()
     return DATA_JSON
 
@@ -55,7 +57,7 @@ export async function fetchPOST(url, fileName, destroy, modal, send) {
       destroy()
     }
 
-  } catch {
+  } catch (e) {
     alert('Проблемы с сервером')
     throw new Error(`
       Не получили данные по адресу ${url},
