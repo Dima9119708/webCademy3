@@ -6,7 +6,6 @@ export async function fetchDATA(url, fileName) {
   try {
     const getDATA = await fetch(url, {
       method : 'GET',
-      mode: 'cors',
     })
     const DATA_JSON = await getDATA.json()
     return DATA_JSON

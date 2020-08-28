@@ -46,6 +46,23 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+        options: {
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                targets: {
+                  "node": "current"
+                }
+              }
+            ]
+          ],
+          plugins: [
+            "@babel/plugin-proposal-class-properties",
+            "@babel/plugin-syntax-object-rest-spread",
+            "@babel/plugin-proposal-object-rest-spread"
+          ]
+        },
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
